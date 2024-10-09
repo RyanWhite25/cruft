@@ -43,6 +43,8 @@ def create(
                 default_config,
                 extra_context,
                 no_input,
+                output_dir,
+                checkout
             )
 
         project_dir = Path(

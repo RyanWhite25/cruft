@@ -39,6 +39,8 @@ def link(
             default_config,
             extra_context,
             no_input,
+            project_dir,
+            checkout
         )
         if no_input:
             use_commit = last_commit
