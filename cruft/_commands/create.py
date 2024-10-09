@@ -2,11 +2,13 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from cookiecutter.generate import generate_files
+from cookiecutter.prompt import choose_nested_template
 
 from . import utils
 from .utils import example
 from .utils.iohelper import AltTemporaryDirectory
-
+from .utils.clean import clean_context
+from .utils.nested import is_nested_template
 
 @example("https://github.com/timothycrosley/cookiecutter-python/")
 def create(
@@ -44,7 +46,25 @@ def create(
                 extra_context,
                 no_input,
                 output_dir,
-                checkout
+                checkout,
+            )
+
+        if is_nested_template(context):
+            nested_template = choose_nested_template(
+                context, cookiecutter_template_dir_str, no_input
+            )
+            return create(
+                template_git_url=template_git_url,
+                output_dir=output_dir,
+                config_file=config_file,
+                default_config=default_config,
+                extra_context=extra_context,
+                extra_context_file=extra_context_file,
+                no_input=no_input,
+                directory=nested_template.replace(cookiecutter_template_dir_str, '.').split('./', 1)[1], # TODO fix this
+                checkout=checkout,
+                overwrite_if_exists=overwrite_if_exists,
+                skip=skip,
             )
 
         project_dir = Path(
@@ -60,7 +80,7 @@ def create(
             "template": template_git_url,
             "commit": last_commit,
             "checkout": checkout,
-            "context": context,
+            "context": clean_context(context),
             "directory": directory,
         }
 

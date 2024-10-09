@@ -1,5 +1,5 @@
-import os
 import json
+import os
 from pathlib import Path
 from typing import Any, Dict, Optional
 from urllib.parse import urlparse
@@ -10,6 +10,7 @@ from cookiecutter.prompt import prompt_for_config
 from git import GitCommandError, Repo
 
 from cruft.exceptions import InvalidCookiecutterRepository, UnableToFindCookiecutterTemplate
+from cruft._commands.utils.nested import is_nested_template
 
 CookiecutterContext = Dict[str, Any]
 
@@ -81,10 +82,9 @@ def generate_cookiecutter_context(
     default_config: bool = False,
     extra_context: Optional[Dict[str, Any]] = None,
     no_input: bool = False,
-    project_dir: str = ".",
-    checkout: Optional[str] = None
+    project_dir: Path = Path("."),
+    checkout: Optional[str] = None,
 ) -> CookiecutterContext:
-    _validate_cookiecutter(cookiecutter_template_dir)
 
     context_file = cookiecutter_template_dir / "cookiecutter.json"
     config_dict = get_user_config(
@@ -97,20 +97,25 @@ def generate_cookiecutter_context(
         extra_context=extra_context,
     )
 
+    if is_nested_template(context):
+        return context
+
+    _validate_cookiecutter(cookiecutter_template_dir)
+
     # prompt the user to manually configure at the command line.
     # except when 'no-input' flag is set
     context["cookiecutter"] = prompt_for_config(context, no_input)
     context["cookiecutter"]["_template"] = template_git_url
 
     # include output dir in the context dict
-    context['cookiecutter']['_output_dir'] = os.path.abspath(project_dir)
+    context["cookiecutter"]["_output_dir"] = os.path.abspath(project_dir)
 
     # include repo dir in the context dict
-    context['cookiecutter']['_repo_dir'] = os.path.abspath(cookiecutter_template_dir)
+    context["cookiecutter"]["_repo_dir"] = os.path.abspath(cookiecutter_template_dir)
 
     # include checkout details in the context dict
     if checkout is not None:
-        context['cookiecutter']['_checkout'] = checkout
+        context["cookiecutter"]["_checkout"] = checkout
 
     return context
 
