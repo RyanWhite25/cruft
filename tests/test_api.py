@@ -4,6 +4,7 @@ import re
 import sys
 from pathlib import Path
 from subprocess import run
+from unittest.mock import MagicMock
 
 import pytest
 from examples import verify_and_test_examples
@@ -322,3 +323,25 @@ def test_diff_git_subdir(capfd, tmpdir):
     )
 
     assert cruft.update(project_dir, checkout="updated")
+
+def test_nested_template(mocker, tmpdir):
+    main_dir = str((Path("tests/testdata/nested-templates")).resolve())
+
+    mocker.patch("cruft._commands.utils.cookiecutter.resolve_template_url", return_value="foo")
+
+    mock_temp_directory_manager = MagicMock()
+    mock_temp_directory_manager.__enter__.return_value = main_dir
+    mocker.patch("cruft._commands.create.AltTemporaryDirectory", return_value=mock_temp_directory_manager)
+
+    mock_context_manager = MagicMock()
+    mock_context_manager.__enter__.return_value.head.object.hexsha = 'abc123'
+    mocker.patch("cruft._commands.utils.cookiecutter.get_cookiecutter_repo", return_value=mock_context_manager)
+
+    cruft.create(
+        "foo",
+        tmpdir,
+        no_input=True
+    )
+
+    with open(f"{tmpdir}/nested-app/.cruft.json", 'r') as cruft_file:   
+        assert json.load(cruft_file)["directory"] == "fake-project"

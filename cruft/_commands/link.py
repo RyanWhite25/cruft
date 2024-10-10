@@ -3,6 +3,8 @@ from typing import Any, Dict, Optional
 
 import typer
 
+from cruft._commands.utils.clean import clean_context
+
 from . import utils
 from .utils import example
 from .utils.iohelper import AltTemporaryDirectory
@@ -58,7 +60,7 @@ def link(
                     "template": template_git_url,
                     "commit": use_commit,
                     "checkout": checkout,
-                    "context": context,
+                    "context": clean_context(context),
                     "directory": directory,
                 }
             )

@@ -160,10 +160,6 @@ def test_link(cruft_runner, cookiecutter_dir):
     # compare the 2 .cruft.json
     cruft_file = utils.cruft.get_cruft_file(cookiecutter_dir)
     cruft_config_from_link = json.loads(cruft_file.read_text())
-    cruft_config_from_create["context"]["cookiecutter"].pop("_output_dir")
-    cruft_config_from_create["context"]["cookiecutter"].pop("_repo_dir")
-    cruft_config_from_link["context"]["cookiecutter"].pop("_output_dir")
-    cruft_config_from_link["context"]["cookiecutter"].pop("_repo_dir")
     assert cruft_config_from_create == cruft_config_from_link
 
 
@@ -190,11 +186,7 @@ def test_link_interactive(cruft_runner, cookiecutter_dir):
     cruft_file = utils.cruft.get_cruft_file(cookiecutter_dir)
     cruft_config_from_link = json.loads(cruft_file.read_text())
     cruft_config_from_create["context"]["cookiecutter"].pop("project")
-    cruft_config_from_create["context"]["cookiecutter"].pop("_output_dir")
-    cruft_config_from_create["context"]["cookiecutter"].pop("_repo_dir")
     cruft_config_from_link["context"]["cookiecutter"].pop("project")
-    cruft_config_from_link["context"]["cookiecutter"].pop("_output_dir")
-    cruft_config_from_link["context"]["cookiecutter"].pop("_repo_dir")
     assert cruft_config_from_create == cruft_config_from_link
 
 
@@ -220,10 +212,6 @@ def test_link_checkout(cruft_runner, cookiecutter_dir_updated):
     # compare the 2 .cruft.json
     cruft_file = utils.cruft.get_cruft_file(cookiecutter_dir_updated)
     cruft_config_from_link = json.loads(cruft_file.read_text())
-    cruft_config_from_create["context"]["cookiecutter"].pop("_output_dir")
-    cruft_config_from_create["context"]["cookiecutter"].pop("_repo_dir")
-    cruft_config_from_link["context"]["cookiecutter"].pop("_output_dir")
-    cruft_config_from_link["context"]["cookiecutter"].pop("_repo_dir")
     assert cruft_config_from_create == cruft_config_from_link
 
 
