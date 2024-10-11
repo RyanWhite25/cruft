@@ -8,7 +8,7 @@ from . import utils
 from .utils import example
 from .utils.iohelper import AltTemporaryDirectory
 from .utils.clean import clean_context
-from .utils.nested import is_nested_template
+from .utils.nested import get_relative_path, is_nested_template
 
 @example("https://github.com/timothycrosley/cookiecutter-python/")
 def create(
@@ -61,7 +61,7 @@ def create(
                 extra_context=extra_context,
                 extra_context_file=extra_context_file,
                 no_input=no_input,
-                directory=nested_template.replace(cookiecutter_template_dir_str, '.').split('./', 1)[1], # TODO fix this
+                directory=get_relative_path(nested_template, cookiecutter_template_dir_str),
                 checkout=checkout,
                 overwrite_if_exists=overwrite_if_exists,
                 skip=skip,

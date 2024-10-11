@@ -325,7 +325,10 @@ def test_diff_git_subdir(capfd, tmpdir):
     assert cruft.update(project_dir, checkout="updated")
 
 def test_nested_template(mocker, tmpdir):
-    main_dir = str((Path("tests/testdata/nested-templates")).resolve())
+    tmpdir.chdir()
+
+    test_file_directory = os.path.dirname(__file__)
+    main_dir = f"{test_file_directory}/testdata/nested-templates"
 
     mocker.patch("cruft._commands.utils.cookiecutter.resolve_template_url", return_value="foo")
 
