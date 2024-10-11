@@ -329,13 +329,13 @@ def test_nested_template(mocker, tmpdir):
 
     mocker.patch("cruft._commands.utils.cookiecutter.resolve_template_url", return_value="foo")
 
-    mock_temp_directory_manager = MagicMock()
-    mock_temp_directory_manager.__enter__.return_value = main_dir
-    mocker.patch("cruft._commands.create.AltTemporaryDirectory", return_value=mock_temp_directory_manager)
+    mock_temp_dir_context_manager = MagicMock()
+    mock_temp_dir_context_manager.__enter__.return_value = main_dir
+    mocker.patch("cruft._commands.create.AltTemporaryDirectory", return_value=mock_temp_dir_context_manager)
 
-    mock_context_manager = MagicMock()
-    mock_context_manager.__enter__.return_value.head.object.hexsha = 'abc123'
-    mocker.patch("cruft._commands.utils.cookiecutter.get_cookiecutter_repo", return_value=mock_context_manager)
+    mock_repo_context_manager = MagicMock()
+    mock_repo_context_manager.__enter__.return_value.head.object.hexsha = 'abc123'
+    mocker.patch("cruft._commands.utils.cookiecutter.get_cookiecutter_repo", return_value=mock_repo_context_manager)
 
     cruft.create(
         "foo",
