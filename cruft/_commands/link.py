@@ -4,6 +4,7 @@ from typing import Any, Dict, Optional
 import typer
 
 from cruft._commands.utils.clean import clean_context
+from cruft._commands.utils.validate import validate_cookiecutter
 
 from . import utils
 from .utils import example
@@ -33,6 +34,8 @@ def link(
 
         if directory:
             cookiecutter_template_dir = cookiecutter_template_dir / directory
+
+        validate_cookiecutter(cookiecutter_template_dir)
 
         context = utils.cookiecutter.generate_cookiecutter_context(
             template_git_url,

@@ -9,6 +9,8 @@ from warnings import warn
 from cookiecutter.generate import generate_files
 from git import Repo
 
+from cruft._commands.utils.validate import validate_cookiecutter
+
 from .cookiecutter import CookiecutterContext, generate_cookiecutter_context
 from .cruft import CruftState
 from .iohelper import AltTemporaryDirectory
@@ -72,6 +74,9 @@ def _generate_output(
         for key, value in cruft_state["context"]["cookiecutter"].items()
         if not key.startswith("_")
     }
+    
+    validate_cookiecutter(inner_dir)
+
     new_context = generate_cookiecutter_context(
         cruft_state["template"],
         inner_dir,
