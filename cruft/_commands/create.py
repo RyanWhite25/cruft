@@ -4,6 +4,8 @@ from typing import Any, Dict, List, Optional
 from cookiecutter.generate import generate_files
 from cookiecutter.prompt import choose_nested_template
 
+from cruft._commands.utils.validate import validate_cookiecutter
+
 from . import utils
 from .utils import example
 from .utils.iohelper import AltTemporaryDirectory
@@ -66,6 +68,8 @@ def create(
                 overwrite_if_exists=overwrite_if_exists,
                 skip=skip,
             )
+        
+        validate_cookiecutter(cookiecutter_template_dir)
 
         project_dir = Path(
             generate_files(

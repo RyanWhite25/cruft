@@ -62,19 +62,6 @@ def get_cookiecutter_repo(
             )
     return repo
 
-
-def _validate_cookiecutter(cookiecutter_template_dir: Path):
-    main_cookiecutter_directory: Optional[Path] = None
-
-    for dir_item in cookiecutter_template_dir.glob("*cookiecutter.*"):
-        if dir_item.is_dir() and "{{" in dir_item.name and "}}" in dir_item.name:
-            main_cookiecutter_directory = dir_item
-            break
-
-    if not main_cookiecutter_directory:
-        raise UnableToFindCookiecutterTemplate(cookiecutter_template_dir)
-
-
 def generate_cookiecutter_context(
     template_git_url: str,
     cookiecutter_template_dir: Path,
@@ -99,8 +86,6 @@ def generate_cookiecutter_context(
 
     if is_nested_template(context):
         return context
-
-    _validate_cookiecutter(cookiecutter_template_dir)
 
     # prompt the user to manually configure at the command line.
     # except when 'no-input' flag is set

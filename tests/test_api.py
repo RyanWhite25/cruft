@@ -25,8 +25,14 @@ def test_invalid_cookiecutter_reference(tmpdir):
         cruft.create("https://github.com/cruft/cookiecutter-test", Path(tmpdir), checkout="DNE")
 
 
-def test_no_cookiecutter_dir(tmpdir):
+def test_no_cookiecutter_dir(tmpdir, mocker):
     with pytest.raises(exceptions.UnableToFindCookiecutterTemplate):
+        mock_repo_context_manager = MagicMock()
+        mock_repo_context_manager.__enter__.return_value.head.object.hexsha = 'abc123'
+        mocker.patch("cruft._commands.utils.cookiecutter.get_cookiecutter_repo", return_value=mock_repo_context_manager)
+  
+        mocker.patch("cruft._commands.utils.cookiecutter.generate_cookiecutter_context", return_value={'cookiecutter': {}})
+        
         cruft.create("https://github.com/cruft/cookiecutter-test", Path(tmpdir))
 
 
