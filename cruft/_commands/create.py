@@ -8,9 +8,10 @@ from cruft._commands.utils.validate import validate_cookiecutter
 
 from . import utils
 from .utils import example
-from .utils.iohelper import AltTemporaryDirectory
 from .utils.clean import clean_context
+from .utils.iohelper import AltTemporaryDirectory
 from .utils.nested import get_relative_path, is_nested_template
+
 
 @example("https://github.com/timothycrosley/cookiecutter-python/")
 def create(
@@ -68,7 +69,7 @@ def create(
                 overwrite_if_exists=overwrite_if_exists,
                 skip=skip,
             )
-        
+
         validate_cookiecutter(cookiecutter_template_dir)
 
         project_dir = Path(

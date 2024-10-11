@@ -3,6 +3,7 @@ from typing import Optional
 
 from cruft.exceptions import UnableToFindCookiecutterTemplate
 
+
 def validate_cookiecutter(cookiecutter_template_dir: Path):
     main_cookiecutter_directory: Optional[Path] = None
 
@@ -13,4 +14,3 @@ def validate_cookiecutter(cookiecutter_template_dir: Path):
 
     if not main_cookiecutter_directory:
         raise UnableToFindCookiecutterTemplate(cookiecutter_template_dir)
-

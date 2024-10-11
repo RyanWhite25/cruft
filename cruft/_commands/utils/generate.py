@@ -74,7 +74,7 @@ def _generate_output(
         for key, value in cruft_state["context"]["cookiecutter"].items()
         if not key.startswith("_")
     }
-    
+
     validate_cookiecutter(inner_dir)
 
     new_context = generate_cookiecutter_context(

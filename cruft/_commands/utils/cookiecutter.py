@@ -9,8 +9,8 @@ from cookiecutter.generate import generate_context
 from cookiecutter.prompt import prompt_for_config
 from git import GitCommandError, Repo
 
-from cruft.exceptions import InvalidCookiecutterRepository, UnableToFindCookiecutterTemplate
 from cruft._commands.utils.nested import is_nested_template
+from cruft.exceptions import InvalidCookiecutterRepository
 
 CookiecutterContext = Dict[str, Any]
 
@@ -61,6 +61,7 @@ def get_cookiecutter_repo(
                 f"Failed to check out the reference {checkout}. {error.stderr.strip()}",
             )
     return repo
+
 
 def generate_cookiecutter_context(
     template_git_url: str,
