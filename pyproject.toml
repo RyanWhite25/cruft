@@ -5,11 +5,7 @@ description = "Allows you to maintain all the necessary cruft for packaging and 
 authors = ["Timothy Crosley <timothy.crosley@gmail.com>", "Sambhav Kothari <sambhavs.email@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-
-[tool.poetry.packages]
-packages = [
-    { include = "cruft" }
-]
+packages = [{ include = "cruft" }]
 
 [tool.poetry.dependencies]
 python = ">=3.7"
